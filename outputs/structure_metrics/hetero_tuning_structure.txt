@@ -1,0 +1,8 @@
+STRUCTURE METRICS  hetero_tuning  (100 models)
+ssim: higher = better (1 = identical);  if_err: interface depth error in m (lower = better);
+body_iou: overlap of recovered anomaly and body (higher = better); body_contr: recovered share of
+the true contrast (1 = full); body_shift: centroid offset in m.  'wins' = share of models better than pyGIMLi.
+
+method                RMS   SSIM  wins  if_err  wins    IoU  wins  contr  shift
+vae_pg_dip_plain128  0.172  0.661    -     0.77    -    0.28    -    0.48   1.34
+vae_random_plain128  0.178  0.656    -     0.86    -    0.28    -    0.47   1.26

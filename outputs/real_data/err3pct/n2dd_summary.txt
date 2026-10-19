@@ -1,0 +1,13 @@
+n2dd: {'file': 'real_data/n2dd.pyg', 'kind': 'resistance -> apparent resistivity (true geometry)', 'n_elec': 48, 'n_data': 917, 'removed': 0, 'spacing': 0.5, 'length': 23.49, 'f': 2.0008514261387824, 'x0': 0.0, 'err': 0.03}
+  pygimli          chi2 0.38  lambda 300  time 0.2 min
+  vae_random       chi2 2.72  lambda 1  time 2.1 min
+  vae_pg_dip       chi2 2.76  lambda 0.3  time 28.0 min
+  pygimli_topo     chi2 0.36  lambda 300  time 0.0 min
+  hybrid_vae_dip   chi2 0.17  lambda 300  time 0.3 min
+  vae_random_128   chi2 1.23  lambda 0.1  time 6.1 min
+  vae_pg_dip_128   chi2 1.75  lambda 1  time 6.2 min
+  vae_random_p128  chi2 2.20  lambda 1  time 3.4 min
+  vae_pg_dip_p128  chi2 0.96  lambda 0.1  time 13.7 min
+  hybrid_vae_dip_128 chi2 0.17  lambda 300  time 0.2 min
+  hybrid_vae_dip_p128 chi2 0.15  lambda 300  time 0.2 min
+  pyGIMLi coverage: share of the section with coverage > 0.01 (standardizedCoverage): 59%

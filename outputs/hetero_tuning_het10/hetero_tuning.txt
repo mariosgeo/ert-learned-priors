@@ -1,0 +1,16 @@
+HETEROGENEITY +-10 %: TUNING CHECK on 100 models
+
+beats best pyG: against the best of the pyGIMLi settings run on that model (all four only on the
+20-model subset); p: paired Wilcoxon test against pyGIMLi (benchmark setting)
+
+setting                                        median RMS  beats pyG(bench)  beats best pyG       p
+pyGIMLi L1 zW0.3 (benchmark)                        0.172                0%              0%     nan   (n=100)
+VAE random (constant-layer prior)                   0.159               63%             63%   0.024   (n=100)
+VAE random textured s0.1 nz64 (benchmark)           0.162               60%             60%   0.073   (n=100)
+vae_random_nz128                                    0.160               70%             70%   0.000   (n=100)
+VAE dip-aware (constant-layer prior)                0.156               77%             77%   0.000   (n=100)
+VAE dip-aware textured s0.1 nz64 (benchmark)        0.159               70%             70%   0.000   (n=100)
+vae_pg_dip_nz128                                    0.158               74%             74%   0.000   (n=100)
+Hybrid on VAE dip-aware nz64 (benchmark)            0.155               79%             79%   0.000   (n=100)
+hybrid_nz128                                        0.155               76%             76%   0.000   (n=100)
+hybrid_plain128                                     0.156               77%             77%   0.000   (n=100)

@@ -1,0 +1,47 @@
+TIMING BENCHMARK
+machine: Intel64 Family 6 Model 183 Stepping 1, GenuineIntel  |  Windows-10-10.0.26300-SP0
+
+1. TRAINING (once; measured on short runs, scaled to the full set-up)
+
+network                               models  steps  generate   train   total  RAM set     GPU
+general VAE (random prior)            200000  40000     4.3 m  32.2 m  36.5 m    2.3 GB   849 MB
+general VAE, textured                 200000  40000     7.1 m  31.8 m  38.9 m    2.3 GB   849 MB
+general VAE, textured, 128 latent     200000  40000     7.1 m  32.1 m  39.1 m    2.3 GB   863 MB
+body-only VAE (option B)              100000  20000     0.8 m  15.8 m  16.6 m    1.1 GB   842 MB
+
+   RAM set: memory of the training set, measured on 20 000 models and scaled to the full
+   set. GPU: peak PyTorch allocation during training.
+
+   logged full trainings: general VAE (random prior), incl. its test inversions: total 10264s; GAN (WGAN-GP, 20 000 generator steps): 83 min; body-only VAE: 19 min; textured VAE, sigma 0.05: 32 min; textured VAE, 128 latent: 32 min
+
+2. INVERSION per data set (median over 6 models; one process, methods run alone; seconds)
+
+method               total  analysis train.mod fine-tune inversion  other  Jacob.   fwd  s/Jac  s/fwd  RAM pk   +RAM    GPU
+pygimli                 69         0         0         0        69      1       0     0    nan    nan    5125    799     17
+sparse                  53         0         0         0        52      1      12    14   2.33   1.70    4875    526     17
+vae_random             132         0         0         0       131      1      27    39   2.31   1.69    4034    540     17
+vae_pg                 288         0        16       142       128      1      26    40   2.26   1.68    4313    779    850
+vae_pg_ar              276         0        15       142       117      1      26    32   2.27   1.70    4502    767    849
+vae_pg_dip             294         0        16       142       134      2      26    40   2.28   1.70    4802    783    849
+gan                    239         4         0         0       233      2      34    90   2.25   1.69    4254    529     19
+pygimli_robust          98         0         0         0        97      2       0     0    nan    nan    3724    750     17
+pygimli_dipsteer       103         0         0         0       101      2       0     0    nan    nan    3961    807     17
+hybrid_vae_dip          12         0         0         0        10      2       0     0    nan    nan    3676    769     17
+layered_param          183         0         0         0       181      2       0     0    nan    nan    3970   1051     17
+vae_pg_layer           278         0        16       142       117      2      26    33   2.27   1.70    3690    780    849
+layers_vae             139         0         0         0       136      3       0     0    nan    nan    4884   1170     17
+ttl_cnn                 43         0         0         0        40      3       8     8   2.26   1.79    3692    501     17
+ttl_field               35         0         0         0        32      3       7     7   2.28   1.80    3966    510     17
+pygimli_fine           195         0         0         0       192      3       0     0    nan    nan    4910   1414     17
+vae_pg_fine            306         0         0         0       301      4      26    34   6.23   4.11    4393   1491     17
+
+   'other' = loading the data / networks, writing results, true-model metrics.
+   Memory in MB: RAM pk = highest peak RAM of the process over the models (includes what is
+   already loaded: Python, PyTorch, the networks, pyGIMLi meshes), +RAM = median increase
+   during the method, GPU = highest peak PyTorch GPU allocation (0 = CPU only).
+   VAE variants: the network is trained ONCE (section 1); per data set the pyGIMLi-guided
+   variants add generating 20 000 training models + fine-tuning; 'inversion' is the latent
+   Gauss-Newton search (3 restarts + lambda stages), dominated by pyGIMLi Jacobians.
+   Times assume pyGIMLi has already been run (it is needed by most methods).
+   Jacobian / forward counts cover the ERTForward wrapper (VAE, GAN, sparse, test-time methods);
+   pyGIMLi's own inversions and the explicit-layer methods use their own operators (shown as 0).

@@ -1,0 +1,19 @@
+BENCHMARK  100 models; identical noisy data for every method
+
+Median RMS log10(rec/true) in the covered zone (lower = better) | number of models where the method is best
+group                        n   pyGIMLi   VAE-rnd VAEpg-dip    pyGIMLi VAE-rnd VAEpg-d
+A  2 layers                  8     0.150     0.126     0.122          0       4       4
+B  3 layers                 12     0.208     0.200     0.210          3       6       3
+C  4 layers                  5     0.406     0.324     0.324          2       3       0
+D1 1 dipping interface       8     0.129     0.149     0.132          2       3       3
+D2 2 dipping interfaces      8     0.229     0.256     0.260          4       2       2
+D3 complex interfaces       14     0.125     0.128     0.131          4       7       3
+E  1 body                   20     0.144     0.151     0.134          2       8      10
+F  2 bodies                 15     0.189     0.217     0.177          3       2      10
+G  3-5 bodies, complex      10     0.252     0.285     0.278          5       2       3
+ALL                        100     0.179     0.173     0.170         25      37      38
+
+Mean rank (1 = best of 3): pyGIMLi 2.13, VAE, random prior 1.98, VAE, pyGIMLi-guided, dip-aware 1.89
+Beats pyGIMLi (share of models): VAE, random prior 56%, VAE, pyGIMLi-guided, dip-aware 57%
+Fits the data (chi2 <= 1.10): pyGIMLi 99%, VAE, random prior 23%, VAE, pyGIMLi-guided, dip-aware 22%
+Median |log10 error| inside the bodies (groups E-G): pyGIMLi 0.411, VAE, random prior 0.437, VAE, pyGIMLi-guided, dip-aware 0.389

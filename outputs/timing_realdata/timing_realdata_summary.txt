@@ -1,0 +1,39 @@
+TIMING AND MEMORY ON THE FIELD DATA
+machine: Intel64 Family 6 Model 183 Stepping 1, GenuineIntel  |  Windows-10-10.0.26300-SP0
+
+seconds; memory in MB (RAM pk = peak RAM of the process incl. what is already loaded, +RAM = increase
+during the method, GPU = peak PyTorch GPU allocation, 0 = CPU only)
+
+g4_02
+method                                      total analys tr.mod f-tune invers other  Jac  fwd  RAM pk  +RAM   GPU   chi2
+pyGIMLi (blocky, zWeight 0.3)                  59      0      0      0     55     4    1    1    1636   887     0   0.96
+VAE, random prior (64)                        138      0      0      0    134     4   36   67    2066  1286     0  25.77
+VAE, pyGIMLi-guided (64)                      303      0     16    143    140     4   36   73    2986  1527   849  14.06
+VAE, pyGIMLi-guided (64, strict prior)        469      0     13    143    307     5   36   70    3178  1098   849  19.95
+VAE, random prior (128, textured)             395      0      0      0    387     8   39   91    3375  1292    17   9.90
+VAE, pyGIMLi-guided (128, textured)           666      0     75    144    438     8   44  105    3721  1085   863   6.81
+VAE, random prior (128, plain)                368      0      0      0    359     8   37   87    3475   825    17  11.97
+VAE, pyGIMLi-guided (128, plain)              684      0     39    144    493     8   49  119    3855  1185   863   3.65
+Hybrid (pyGIMLi + guided VAE 64)              126      0      0      0    118     9    1    1    3476   821    17   1.00
+Hybrid (pyGIMLi + guided VAE 64, strict prior)    110      0      0      0    101     9    1    1    3476   817    17   0.99
+Hybrid (pyGIMLi + guided VAE 128)             171      0      0      0    162     9    1    1    3477   814    17   0.73
+Hybrid (pyGIMLi + guided VAE 128 plain)       104      0      0      0     95     9    1    1    3478   809    17   0.93
+
+n2dd
+method                                      total analys tr.mod f-tune invers other  Jac  fwd  RAM pk  +RAM   GPU   chi2
+pyGIMLi (blocky, zWeight 0.3)                  37      0      0      0     22    14    1    1    3633   959    17   0.60
+VAE, random prior (64)                        248      0      0      0    236    12   22   33    3634   950    17  24.12
+VAE, pyGIMLi-guided (64)                      529      0     38    142    336    12   32   48    3735   986   849  20.87
+VAE, pyGIMLi-guided (64, strict prior)        556      0     29    143    372    13   33   55    3921  1198   849  20.41
+VAE, random prior (128, textured)             542      0      0      0    530    12   41   87    3669   945    17   8.34
+VAE, pyGIMLi-guided (128, textured)           828      0     71    144    601    12   43  104    3769  1061   863  11.06
+VAE, random prior (128, plain)                388      0      0      0    375    12   32   58    3636   946    17  12.75
+VAE, pyGIMLi-guided (128, plain)              697      0     37    145    503    12   39   83    3674   965   863  11.79
+Hybrid (pyGIMLi + guided VAE 64)               25      0      0      0     12    14    1    1    3622   940    17   0.67
+Hybrid (pyGIMLi + guided VAE 64, strict prior)     26      0      0      0     12    14    1    1    3621   939    17   0.69
+Hybrid (pyGIMLi + guided VAE 128)              26      0      0      0     12    14    1    1    3622   936    17   0.66
+Hybrid (pyGIMLi + guided VAE 128 plain)        29      0      0      0     16    14    1    1    3623   939    17   0.91
+
+Hybrid = the hybrid step alone (its guided VAE is listed separately; add both for the full cost).
+Guided VAE = dip-aware analysis + 20 000 training models + fine-tuning (GPU) + latent inversion.
+pyGIMLi's own inversions use their own operators, so their Jacobian counts show as 0.

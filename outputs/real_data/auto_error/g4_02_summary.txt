@@ -1,0 +1,15 @@
+g4_02: {'file': 'real_data/g4_02.pyg', 'kind': 'apparent resistivity', 'n_elec': 24, 'n_data': 365, 'removed': 0, 'spacing': 0.5999999999999996, 'length': 13.799999999999999, 'f': 3.405797101449276, 'x0': 0.0, 'err': 0.025874682071051137, 'err_path': {'lams': array([300. , 100. ,  50. ,  20. ,  10. ,   5. ,   2. ,   1. ,   0.5]), 'rms': array([0.06267664, 0.04113313, 0.03372885, 0.02706023, 0.02384429,
+       0.02587468, 0.02555579, 0.02627256, 0.02249088]), 'k': 5}}
+  pygimli          chi2 0.96  lambda 20  time 1.0 min
+  vae_random       chi2 25.77  lambda 10  time 4.4 min
+  vae_pg_dip       chi2 14.27  lambda 3  time 54.1 min
+  vae_random_128   chi2 9.90  lambda 3  time 8.1 min
+  vae_pg_dip_128   chi2 5.43  lambda 1  time 58.7 min
+  hybrid_vae_dip   chi2 1.01  lambda 20  time 2.0 min
+  hybrid_vae_dip_128 chi2 0.74  lambda 5  time 2.6 min
+  vae_random_p128  chi2 11.97  lambda 10  time 12.0 min
+  vae_pg_dip_p128  chi2 8.67  lambda 10  time 67.5 min
+  hybrid_vae_dip_p128 chi2 0.94  lambda 20  time 3.4 min
+  vae_pg_dip_strict chi2 19.95  lambda 10  time 28.9 min
+  hybrid_vae_dip_strict chi2 0.99  lambda 20  time 3.4 min
+  pyGIMLi coverage: share of the section with coverage > 0.01 (standardizedCoverage): 75%

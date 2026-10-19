@@ -1,0 +1,15 @@
+STRUCTURE METRICS  vae_benchmark_het10  (100 models)
+ssim: higher = better (1 = identical);  if_err: interface depth error in m (lower = better);
+body_iou: overlap of recovered anomaly and body (higher = better); body_contr: recovered share of
+the true contrast (1 = full); body_shift: centroid offset in m.  'wins' = share of models better than pyGIMLi.
+
+method                RMS   SSIM  wins  if_err  wins    IoU  wins  contr  shift
+pygimli             0.172  0.686    -     0.72    -    0.30    -    0.47   1.21
+hybrid_vae_dip      0.155  0.720   77%    0.57   75%   0.36   80%   0.53   0.96
+layered_param       0.201  0.696   48%    0.71   60%   0.00    9%   0.10   2.87
+layers_vae          0.180  0.745   60%    0.68   63%   0.22   44%   0.36   1.97
+pygimli_dipsteer    0.172  0.651   22%    0.62   67%   0.29   51%   0.42   1.22
+ttl_cnn             0.187  0.649   25%    0.86   45%   0.26   56%   0.47   1.39
+ttl_field           0.195  0.616   19%    1.01   44%   0.33   69%   0.46   1.08
+vae_pg_dip          0.156  0.720   75%    0.56   74%   0.35   76%   0.53   1.05
+vae_random          0.159  0.693   63%    0.62   67%   0.33   64%   0.48   1.16

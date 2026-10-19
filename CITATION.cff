@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite the paper and this archive."
+title: "Data-adaptive learned priors for ERT inversion: code, data and results"
+authors:
+  - family-names: Karaoulis
+    given-names: Marios
+    affiliation: "Aristotle University of Thessaloniki, School of Geology, Department of Geophysics"
+    email: mkaraoulis@geo.auth.gr
+  - family-names: Tsourlos
+    given-names: Panagiotis
+    affiliation: "Aristotle University of Thessaloniki, School of Geology, Department of Geophysics"
+    email: tsourlos@geo.auth.gr
+license: MIT
+version: "1.0"
+keywords:
+  - electrical resistivity tomography
+  - inversion
+  - variational autoencoder
+  - learned prior
+  - benchmark
