@@ -15,10 +15,10 @@ from scipy.spatial import cKDTree
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm, Normalize
+from matplotlib.colors import Normalize
 from matplotlib.collections import PolyCollection
 from matplotlib.cm import ScalarMappable
-from real_data_inversion import FILES, LAB, COV_CUT, coverage_alpha
+from real_data_inversion import FILES, LAB, COV_CUT, COV_SCALE_FREE, coverage_alpha, doi_coverage, rho_norm, rho_colorbar
 
 LN10 = np.log(10.0)
 RUN = sys.argv[1] if len(sys.argv) > 1 else "auto_error"
@@ -52,7 +52,7 @@ def main():
         r0 = z0["res"].item()
         cv = r0["coverage"]
         idx = cKDTree(cv["cc"]).query(cc)[1]
-        cov = cv["cov"][idx]
+        cov = doi_coverage(name, cv, f)[idx]
         ok = cov > COV_CUT
         alpha = np.where(ok, coverage_alpha(cv["cov"])[idx], np.minimum(coverage_alpha(cv["cov"])[idx], 0.3))
         M = {k: np.array([z["res"].item()[k]["m"] for _, z in runs]) / LN10 for k in KEYS}
@@ -66,7 +66,7 @@ def main():
         # figure
         pg = r0["pygimli"]["m"] / LN10
         allm = np.concatenate([pg[ok]] + [M[k][:, ok].ravel() for k in KEYS])
-        norm = LogNorm(10 ** np.percentile(allm, 1), 10 ** np.percentile(allm, 99))
+        norm = rho_norm(name, allm)
         snorm = Normalize(0, 0.5)
         panels = [("pyGIMLi", pg, "turbo", norm),
                   (f"guided VAE 64 (strict prior): mean of {len(runs)} repeats", M["vae_pg_dip_strict"].mean(0), "turbo", norm),
@@ -91,13 +91,16 @@ def main():
             ax.set_ylim(-0.45 * L, 0)
             ax.set_aspect("equal")
             ax.set_title(title, loc="left", fontsize=8)
-            fig.colorbar(ScalarMappable(nrm, cm), ax=ax, shrink=0.85, pad=0.01,
-                         label="Ω·m" if cmap == "turbo" else "σ log10 ρ")
+            if cmap == "turbo":
+                rho_colorbar(fig, ScalarMappable(nrm, cm), name, ax=ax, shrink=0.85, pad=0.01, label="Ω·m")
+            else:
+                fig.colorbar(ScalarMappable(nrm, cm), ax=ax, shrink=0.85, pad=0.01, label="σ log10 ρ")
         for ax in axs[len(panels):]:
             ax.set_axis_off()
         fig.suptitle(f"{name}: {len(runs)} repeats of the guided VAE and the hybrid (new training models and "
                      f"fine-tuning per seed), data error {err:.1%}\nopacity: pyGIMLi coverage();  dashed: "
-                     f"pyGIMLi standardizedCoverage() (coverage > {COV_CUT:g})", fontsize=8.5)
+                     f"pyGIMLi standardizedCoverage() (coverage > {COV_CUT:g}"
+                     + (", cell areas in benchmark units" if name in COV_SCALE_FREE else "") + ")", fontsize=8.5)
         for ext in ("png", "pdf"):
             fig.savefig(os.path.join(R, f"{name}_repeats.{ext}"), dpi=160)
         plt.close(fig)

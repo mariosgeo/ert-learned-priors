@@ -13,4 +13,4 @@ n2dd: {'file': 'real_data/n2dd.pyg', 'kind': 'resistance -> apparent resistivity
   hybrid_vae_dip_p128 chi2 0.91  lambda 300  time 0.2 min
   vae_pg_dip_strict chi2 21.55  lambda 1  time 14.4 min
   hybrid_vae_dip_strict chi2 0.69  lambda 300  time 0.5 min
-  pyGIMLi coverage: share of the section with coverage > 0.01 (standardizedCoverage): 58%
+  pyGIMLi coverage: share of the section with coverage > 0.01 (standardizedCoverage): 42%

@@ -17,7 +17,7 @@ lines.
 |---|---|
 | `*.py` | inversion code (see the docstring at the top of each file) |
 | `outputs/paper/*.py` | scripts that reproduce the figures and statistics of the paper |
-| `real_data/` | the two field lines (`g4_02.pyg`, `n2dd.pyg`, pyGIMLi format) and the topography of n2dd |
+| `real_data/` | the three field lines (`g4_02.pyg`, `n2dd.pyg`, `N4DD.pyg`, pyGIMLi format) and the original instrument files (`.A2D`, with the topography of n2dd and N4DD) |
 | `outputs/vae_benchmark*/data/` | the synthetic data sets of the 100 benchmark models, per suite |
 | `outputs/vae_benchmark*/models/`, `outputs/hetero_tuning*/models/` | per-model results of every method (models, errors, data fit) |
 | `outputs/vae_prior*/`, `outputs/hetero_tuning/*.pt`, ... | trained networks (general VAE 64 / 128 latent, plain and textured; GAN; body VAE; learning-curve networks) |

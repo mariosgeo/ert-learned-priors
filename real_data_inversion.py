@@ -48,8 +48,8 @@ OUTR = os.path.join(HERE, "outputs", "real_data")
 LN10 = np.log(10.0)
 L_BENCH = 47.0                                   # benchmark line length (units)
 NOISE0 = 0.03                                    # relative data error of the benchmark
-FILES = {"g4_02": "real_data/g4_02.pyg", "n2dd": "real_data/n2dd.pyg"}
-TOPO = {"n2dd": "real_data/n2dd.A2D"}            # electrode elevations (column 3)
+FILES = {"g4_02": "real_data/g4_02.pyg", "n2dd": "real_data/n2dd.pyg", "N4DD": "real_data/N4DD.pyg"}
+TOPO = {"n2dd": "real_data/n2dd.A2D", "N4DD": "real_data/N4DD.A2D"} # electrode elevations (column 3)
 LAMS_PG = [300, 100, 50, 20, 10, 5, 2]
 LAMS_EST = [300, 100, 50, 20, 10, 5, 2, 1, 0.5]  # lambda path for the error estimate
 VAE128 = os.path.join(HERE, "outputs", "hetero_tuning", "vae_tex_nz128.pt")
@@ -80,9 +80,12 @@ def read_data(fn, err=NOISE0):
     if d.haveData("rhoa") and np.any(np.array(d["rhoa"]) != 0):
         rhoa = np.array(d["rhoa"])
         kind = "apparent resistivity"
-    else:                                         # resistance: k of the TRUE geometry
-        rhoa = np.array(ert.createGeometricFactors(d, numerical=False)) * np.array(d["r"])
-        kind = "resistance -> apparent resistivity (true geometry)"
+    else:                                         # resistance: k of the TRUE spacing on a flat surface
+        dk = pg.DataContainerERT(d)               # elevations in the file (z column) would be read as burial
+        for i in range(dk.sensorCount()):         # depths by the analytical k (up to 2x too large), so x only
+            dk.setSensorPosition(i, [x[i], 0.0, 0.0])
+        rhoa = np.array(ert.createGeometricFactors(dk, numerical=False)) * np.array(d["r"])
+        kind = "resistance -> apparent resistivity (true spacing, flat surface)"
     x0 = x.min()
     f = L_BENCH / (x.max() - x0)
     ds = pg.DataContainerERT(d)
@@ -243,6 +246,39 @@ def invert_file(name, fn, out, error="auto", methods=METHODS, verbose=True, thre
 
 
 COV_CUT = 0.01                                   # pyGIMLi standardizedCoverage(): coverage() > 0.01
+COV_SCALE_FREE = set(FILES)                      # coverage per cell area in benchmark units (see doi_coverage)
+
+
+def doi_coverage(name, cv, f):
+    """pyGIMLi coverage() for the DOI threshold. coverage() divides scale-free log sensitivities by the cell
+    area in m^2, so the fixed 0.01 is stricter on long lines (16x for the 94 m N4DD vs the 23.5 m n2dd). For
+    the lines in COV_SCALE_FREE (all field lines) the areas are taken in benchmark units (line = 47), as in the
+    synthetic benchmark, so that the same threshold means the same for every line."""
+    return cv["cov"] - 2 * np.log10(f) if name in COV_SCALE_FREE else cv["cov"]
+
+
+RHO_LIM = {"N4DD": (40, 300)}                    # fixed resistivity colour scale (ohm m); others: 1-99 % of the cells
+RHO_TICKS = [20, 30, 40, 50, 70, 100, 150, 200, 300, 500, 700, 1000, 2000]
+
+
+def rho_norm(name, allm):
+    """Log colour scale: RHO_LIM for this line, else the 1-99 % percentiles of log10(rho) values allm."""
+    from matplotlib.colors import LogNorm
+    if name in RHO_LIM:
+        return LogNorm(*RHO_LIM[name])
+    return LogNorm(10 ** np.percentile(allm, 1), 10 ** np.percentile(allm, 99))
+
+
+def rho_colorbar(fig, mappable, name, **kw):
+    """Resistivity colour bar; with RHO_LIM labelled ticks across the range, arrows for clipped values."""
+    if name not in RHO_LIM:
+        return fig.colorbar(mappable, **kw)
+    lo, hi = RHO_LIM[name]
+    cb = fig.colorbar(mappable, extend="both", **kw)
+    t = [v for v in RHO_TICKS if lo <= v <= hi]
+    cb.set_ticks(t, labels=[f"{v:g}" for v in t])
+    cb.ax.minorticks_off()
+    return cb
 
 
 def invert_real_geometry(name, ds, info, lam, topography=False, save_dir=None):
@@ -331,7 +367,7 @@ def plot_file(name, out):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from matplotlib.colors import LogNorm, TwoSlopeNorm
+    from matplotlib.colors import TwoSlopeNorm
     from matplotlib.tri import Triangulation
     plt.rcParams.update({"font.size": 9, "pdf.fonttype": 42})
     z = np.load(os.path.join(out, f"{name}_results.npz"), allow_pickle=True)
@@ -344,13 +380,14 @@ def plot_file(name, out):
     if "coverage" in res:                                      # pyGIMLi coverage(), shown as pyGIMLi does
         from scipy.spatial import cKDTree
         cv = res["coverage"]
-        cov_pg = cv["cov"][cKDTree(cv["cc"]).query(cc)[1]]
+        cov_pg = doi_coverage(name, cv, f)[cKDTree(cv["cc"]).query(cc)[1]]
         alpha = coverage_alpha(cv["cov"])[cKDTree(cv["cc"]).query(cc)[1]]
         below = cov_pg <= COV_CUT                              # outside pyGIMLi's standardizedCoverage()
         alpha = np.where(below, np.minimum(alpha, 0.3), alpha)
         doi_field, doi_level = cov_pg, COV_CUT
         doi_txt = (f"opacity: pyGIMLi coverage()\ndashed: depth of investigation, pyGIMLi standardizedCoverage() "
-                   f"(coverage > {COV_CUT:g}), faded below")
+                   f"(coverage > {COV_CUT:g}" + (", cell areas in benchmark units" if name in COV_SCALE_FREE else "")
+                   + "), faded below")
     else:                                                      # fall back: sensitivity threshold
         below = cov < 0.01
         doi_field, doi_level = np.log10(np.maximum(cov, 1e-6)), -2
@@ -373,7 +410,7 @@ def plot_file(name, out):
         return ScalarMappable(norm=nrm, cmap=cm)
     keys = [k for k in METHODS if k in res]
     allm = np.concatenate([res[k]["m"][~below] for k in keys]) / LN10
-    norm = LogNorm(10 ** np.percentile(allm, 1), 10 ** np.percentile(allm, 99))
+    norm = rho_norm(name, allm)
     zmax = 0.45 * L
     elec = np.linspace(0, L, info["n_elec"])
 
@@ -395,7 +432,7 @@ def plot_file(name, out):
         im = cells(ax, np.exp(res[k]["m"]), "turbo", norm)
         frame(ax, f"{LAB[k]}:  χ² = {res[k]['chi2']:.2f},  λ = {res[k]['lam']:g}")
     axs[-1].set_xlabel("x (m)")
-    fig.colorbar(im, ax=axs, shrink=0.5, pad=0.03, aspect=30, label="resistivity (Ω·m)")
+    rho_colorbar(fig, im, name, ax=axs, shrink=0.5, pad=0.03, aspect=30, label="resistivity (Ω·m)")
     fig.suptitle(head, fontsize=7.5)
     for ext in ("png", "pdf"):
         _save(fig, os.path.join(out, f"{name}_models.{ext}"), dpi=160)
@@ -469,7 +506,7 @@ def plot_file(name, out):
         axs[1].set_aspect("equal")
         axs[1].set_ylabel("elevation (m)")
         axs[1].set_xlabel("x (m)")
-        fig.colorbar(im, ax=axs, shrink=0.5, pad=0.03, aspect=30, label="resistivity (Ω·m)")
+        rho_colorbar(fig, im, name, ax=axs, shrink=0.5, pad=0.03, aspect=30, label="resistivity (Ω·m)")
         for ext in ("png", "pdf"):
             _save(fig, os.path.join(out, f"{name}_topography_check.{ext}"), dpi=160)
         plt.close(fig)
@@ -477,7 +514,7 @@ def plot_file(name, out):
                                    f"time {res[k].get('time', 0) / 60:.1f} min" for k in res if k in METHODS or k == "pygimli_topo"]
     if "coverage" in res:
         lines.append(f"  pyGIMLi coverage: share of the section with coverage > {COV_CUT:g} "
-                     f"(standardizedCoverage): {np.mean(res['coverage']['cov'] > COV_CUT):.0%}")
+                     f"(standardizedCoverage): {np.mean(doi_coverage(name, res['coverage'], f) > COV_CUT):.0%}")
     open(os.path.join(out, f"{name}_summary.txt"), "w", encoding="utf-8").write("\n".join(lines))
     print("\n".join(lines), flush=True)
 

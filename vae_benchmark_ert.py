@@ -448,7 +448,8 @@ def finetune(X, seed=0):
     model, mean, std = load_vae(o["random_ckpt"])
     torch.manual_seed(seed)
     dev = G["device"]
-    with _GPULock():
+    import contextlib
+    with (_GPULock() if dev == "cuda" else contextlib.nullcontext()):   # the CPU needs no GPU lock
         model = model.float().to(dev).train()
         Xt = torch.from_numpy((X[:, None] - mean) / std).float().to(dev)
         opt = torch.optim.Adam(model.parameters(), lr=3e-4)

@@ -12,4 +12,4 @@ g4_02: {'file': 'real_data/g4_02.pyg', 'kind': 'apparent resistivity', 'n_elec':
   hybrid_vae_dip_p128 chi2 0.94  lambda 20  time 3.4 min
   vae_pg_dip_strict chi2 19.95  lambda 10  time 28.9 min
   hybrid_vae_dip_strict chi2 0.99  lambda 20  time 3.4 min
-  pyGIMLi coverage: share of the section with coverage > 0.01 (standardizedCoverage): 75%
+  pyGIMLi coverage: share of the section with coverage > 0.01 (standardizedCoverage): 24%

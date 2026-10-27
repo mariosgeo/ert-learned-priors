@@ -20,6 +20,18 @@
 | n2dd | 3.0 | Hybrid (pyGIMLi + guided VAE 64) | 0.17 | 0.41 | 1.23 |
 | n2dd | 3.0 | Hybrid (pyGIMLi + guided VAE 128) | 0.17 | 0.41 | 1.23 |
 | n2dd | 3.0 | Hybrid (pyGIMLi + guided VAE 128 plain) | 0.15 | 0.38 | 1.14 |
+| N4DD | 3.0 | pyGIMLi (blocky, zWeight 0.3) | 0.59 | 0.77 | 2.33 |
+| N4DD | 3.0 | VAE, random prior (64) | 3.18 | 1.78 | 5.41 |
+| N4DD | 3.0 | VAE, pyGIMLi-guided (64) | 2.88 | 1.70 | 5.15 |
+| N4DD | 3.0 | VAE, random prior (128, textured) | 2.00 | 1.42 | 4.29 |
+| N4DD | 3.0 | VAE, pyGIMLi-guided (128, textured) | 0.72 | 0.85 | 2.52 |
+| N4DD | 3.0 | VAE, random prior (128, plain) | 2.35 | 1.53 | 4.59 |
+| N4DD | 3.0 | VAE, pyGIMLi-guided (128, plain) | 1.83 | 1.35 | 4.05 |
+| N4DD | 3.0 | VAE, pyGIMLi-guided (64, strict prior) | 2.13 | 1.46 | 4.38 |
+| N4DD | 3.0 | Hybrid (pyGIMLi + guided VAE 64) | 0.18 | 0.42 | 1.26 |
+| N4DD | 3.0 | Hybrid (pyGIMLi + guided VAE 128) | 0.13 | 0.36 | 1.07 |
+| N4DD | 3.0 | Hybrid (pyGIMLi + guided VAE 128 plain) | 0.17 | 0.41 | 1.22 |
+| N4DD | 3.0 | Hybrid (pyGIMLi + guided VAE 64, strict prior) | 0.23 | 0.48 | 1.42 |
 | g4_02 | 2.6 | pyGIMLi (blocky, zWeight 0.3) | 0.96 | 0.98 | 2.53 |
 | g4_02 | 2.6 | VAE, random prior (64) | 25.77 | 5.08 | 12.71 |
 | g4_02 | 2.6 | VAE, pyGIMLi-guided (64) | 14.27 | 3.78 | 10.19 |
@@ -44,3 +56,15 @@
 | n2dd | 1.0 | Hybrid (pyGIMLi + guided VAE 128) | 0.66 | 0.81 | 0.81 |
 | n2dd | 1.0 | Hybrid (pyGIMLi + guided VAE 128 plain) | 0.91 | 0.96 | 0.96 |
 | n2dd | 1.0 | Hybrid (pyGIMLi + guided VAE 64, strict prior) | 0.69 | 0.83 | 0.83 |
+| N4DD | 1.0 | pyGIMLi (blocky, zWeight 0.3) | 0.85 | 0.92 | 0.92 |
+| N4DD | 1.0 | VAE, random prior (64) | 29.16 | 5.40 | 5.42 |
+| N4DD | 1.0 | VAE, pyGIMLi-guided (64) | 26.78 | 5.17 | 5.28 |
+| N4DD | 1.0 | VAE, random prior (128, textured) | 9.41 | 3.07 | 3.05 |
+| N4DD | 1.0 | VAE, pyGIMLi-guided (128, textured) | 8.07 | 2.84 | 2.80 |
+| N4DD | 1.0 | VAE, random prior (128, plain) | 22.72 | 4.77 | 4.82 |
+| N4DD | 1.0 | VAE, pyGIMLi-guided (128, plain) | 15.53 | 3.94 | 3.95 |
+| N4DD | 1.0 | VAE, pyGIMLi-guided (64, strict prior) | 28.57 | 5.35 | 5.40 |
+| N4DD | 1.0 | Hybrid (pyGIMLi + guided VAE 64) | 0.79 | 0.89 | 0.88 |
+| N4DD | 1.0 | Hybrid (pyGIMLi + guided VAE 128) | 0.53 | 0.73 | 0.73 |
+| N4DD | 1.0 | Hybrid (pyGIMLi + guided VAE 128 plain) | 0.54 | 0.74 | 0.73 |
+| N4DD | 1.0 | Hybrid (pyGIMLi + guided VAE 64, strict prior) | 0.77 | 0.88 | 0.87 |

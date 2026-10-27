@@ -1,0 +1,16 @@
+N4DD: {'file': 'real_data/N4DD.pyg', 'kind': 'resistance -> apparent resistivity (true spacing, flat surface)', 'n_elec': 48, 'n_data': 917, 'removed': 0, 'spacing': 2.0, 'length': 94.0, 'f': 0.5, 'x0': 0.0, 'err': 0.01, 'err_path': {'lams': array([300. , 100. ,  50. ,  20. ,  10. ,   5. ,   2. ,   1. ,   0.5]), 'rms': array([0.03285352, 0.02106347, 0.01577318, 0.01026601, 0.00733315,
+       0.00535937, 0.00353957, 0.00304853, 0.00253508]), 'k': 8}}
+  pygimli          chi2 0.85  lambda 100  time 0.6 min
+  vae_random       chi2 29.16  lambda 10  time 3.1 min
+  vae_pg_dip       chi2 26.78  lambda 3  time 6.0 min
+  vae_random_128   chi2 9.41  lambda 3  time 5.1 min
+  vae_pg_dip_128   chi2 8.07  lambda 3  time 8.5 min
+  vae_random_p128  chi2 22.72  lambda 10  time 2.3 min
+  vae_pg_dip_p128  chi2 15.53  lambda 3  time 8.4 min
+  vae_pg_dip_strict chi2 28.57  lambda 10  time 5.2 min
+  hybrid_vae_dip   chi2 0.79  lambda 300  time 0.1 min
+  hybrid_vae_dip_128 chi2 0.53  lambda 300  time 0.1 min
+  hybrid_vae_dip_p128 chi2 0.54  lambda 300  time 0.1 min
+  hybrid_vae_dip_strict chi2 0.77  lambda 300  time 0.1 min
+  pygimli_topo     chi2 0.99  lambda 100  time 0.0 min
+  pyGIMLi coverage: share of the section with coverage > 0.01 (standardizedCoverage): 40%
