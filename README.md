@@ -1,5 +1,7 @@
 # Data-adaptive learned priors for ERT inversion
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23691904.svg)](https://doi.org/10.5281/zenodo.23691904)
+
 Code, data, trained networks and results of
 
 > Karaoulis, M. & Tsourlos, P. (submitted). Data-adaptive learned priors for electrical resistivity tomography:
@@ -56,4 +58,4 @@ Code: MIT (`LICENSE`). Data, trained networks and results: CC BY 4.0 (`LICENSE-D
 
 ## Citation
 
-See `CITATION.cff`. Please cite the paper and this archive (DOI on Zenodo).
+See `CITATION.cff`. Please cite the paper and this archive: version 1.0.0, https://doi.org/10.5281/zenodo.23691904 (all versions: https://doi.org/10.5281/zenodo.23691903).

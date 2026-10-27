@@ -11,7 +11,8 @@ authors:
     affiliation: "Aristotle University of Thessaloniki, School of Geology, Department of Geophysics"
     email: tsourlos@geo.auth.gr
 license: MIT
-version: "1.0"
+version: "1.0.0"
+doi: 10.5281/zenodo.23691903
 keywords:
   - electrical resistivity tomography
   - inversion
